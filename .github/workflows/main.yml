@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Set up Android SDK
+      run: |
+        echo "Set Permissions"
+        chmod +x gradlew
+        echo "Installing Android SDK Command Line Tools"
+        sudo apt-get update
+        sudo apt-get install -y wget unzip
+        export ANDROID_HOME=$HOME/android-sdk
+        mkdir -p $ANDROID_HOME/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
+        unzip cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
+        chmod +x $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager
+        yes | $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager --update
+        yes | $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+
+    - name: Decrypt JKS file
+      run: openssl aes-256-cbc -d -in my-release-key.jks.enc -out my-release-key.jks -pass pass:${{ secrets.KEYSTORE_PASSWORD }}
+      
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-all-folder-and-file
+        path: app/build/outputs/apk/debug
