@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "337774608208",
+    "firebase_url": "https://retubenubled-default-rtdb.firebaseio.com",
+    "project_id": "retubenubled",
+    "storage_bucket": "retubenubled.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337774608208:android:1a4308c3299d529832f655",
+        "android_client_info": {
+          "package_name": "com.primetubes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337774608208-mdt14qed0e72fj8jt1dncjc8p2loi4hb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3kpZzmVWtB9UQs3rD0hDBTgdtpsjUga8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337774608208-mdt14qed0e72fj8jt1dncjc8p2loi4hb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
