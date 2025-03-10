@@ -10,8 +10,8 @@ android {
 	defaultConfig {
 		applicationId "com.primetube"
 		namespace "com.primetube"
-		minSdkVersion 21
-		targetSdkVersion 34
+		minSdkVersion 23
+		targetSdkVersion 36
 		versionCode 1
 		versionName "1.0"
 	}
